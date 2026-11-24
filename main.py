@@ -17,6 +17,19 @@ LINES = [
 ]
 
 
+def check_entry(written):
+    if (
+        len(written.splitlines()) != 3
+        or not (1 <= len(written) <= 200)
+        or not written.strip()
+    ):
+        print(
+            "error: entry.txt must be 3 lines, 1-200 characters, not blank",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+
 def main():
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
@@ -26,13 +39,7 @@ def main():
         f.write(text)
     with open(path, encoding="utf-8") as f:
         written = f.read()
-    lines = written.splitlines()
-    if len(lines) != 3 or not (1 <= len(written) <= 200) or not written.strip():
-        print(
-            "error: entry.txt must be 3 lines, 1-200 characters, not blank",
-            file=sys.stderr,
-        )
-        sys.exit(1)
+    check_entry(written)
 
 
 if __name__ == "__main__":
